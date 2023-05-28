@@ -1,0 +1,3 @@
+class Authorized < Transact
+
+end

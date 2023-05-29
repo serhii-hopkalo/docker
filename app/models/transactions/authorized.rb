@@ -10,4 +10,6 @@ class Authorized < Transact
 
   validates :customer_email, presence: true, length: { minimum: 5 }
   validates :customer_phone, presence: true, length: { minimum: 5 }
+
+  scope :expired, -> { where('created_at < ?', 1.hour.ago) }
 end

@@ -77,6 +77,8 @@ group :development, :test do
   gem 'byebug'
   gem 'pry'
   gem 'pry-byebug'
+
+  gem 'timecop'
 end
 
 group :development do

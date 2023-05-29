@@ -18,12 +18,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_28_181116) do
   create_table "transacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "amount"
     t.integer "status", null: false
-    t.string "customer_email", null: false
-    t.string "customer_phone", null: false
-    t.integer "type", null: false
+    t.string "customer_email"
+    t.string "customer_phone"
+    t.string "type", null: false
     t.bigint "user_id", null: false
+    t.uuid "transact_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["transact_id"], name: "index_transacts_on_transact_id"
     t.index ["user_id"], name: "index_transacts_on_user_id"
   end
 
@@ -39,5 +41,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_28_181116) do
     t.index ["email"], name: "index_on_email", unique: true
   end
 
+  add_foreign_key "transacts", "transacts"
   add_foreign_key "transacts", "users"
 end

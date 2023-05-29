@@ -2,12 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Transact, type: :model do
   describe 'Validations' do
-    it { should validate_presence_of(:amount) }
-    it { should validate_numericality_of(:amount).only_integer.is_greater_than(0) }
-    it { should validate_presence_of(:customer_email) }
-    it { should validate_length_of(:customer_email).is_at_least(5) }
-    it { should validate_presence_of(:customer_phone) }
-    it { should validate_length_of(:customer_phone).is_at_least(5) }
     it { should validate_presence_of(:status) }
   end
 
@@ -19,9 +13,30 @@ RSpec.describe Transact, type: :model do
     it { should belong_to(:merchant).with_foreign_key(:user_id) }
   end
 
-  describe 'Factory' do
-    it 'is valid' do
-      expect(build(:transact)).to be_valid
+  describe 'linked transactions' do
+    let(:merchant) { create(:merchant) }
+    let(:authorized) { create(:authorized, merchant: merchant) }
+    let(:charged) { create(:charged, authorized: authorized, merchant: merchant) }
+
+    context 'refunded' do
+      before { create(:refunded, charged: charged, merchant: merchant) }
+
+      it 'should destroy refunded, charged and authorized transaction' do
+        expect {
+          authorized.destroy
+        }.to change { Transact.count }.from(3).to(0)
+      end
+    end
+
+    context 'reversal' do
+      before { create(:reversal, authorized: authorized, merchant: merchant) }
+
+      it 'should destroy refunded, charged and authorized transaction' do
+        expect {
+          authorized.destroy
+        }.to change { Transact.count }.from(2).to(0)
+      end
     end
   end
 end
+

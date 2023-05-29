@@ -5,12 +5,12 @@ class AddTransact < ActiveRecord::Migration[7.0]
     create_table :transacts, id: :uuid, force: :cascade do |t|
       t.integer :amount
       t.integer :status, null: false
-      t.string :customer_email, null: false
-      t.string :customer_phone, null: false
-      t.integer :type, null: false
+      t.string :customer_email
+      t.string :customer_phone
+      t.string :type, null: false
 
       t.references :user, null: false, foreign_key: true
-      t.references :transact, foreign_key: true
+      t.references :transact, foreign_key: true, type: :uuid
 
       t.timestamps
     end

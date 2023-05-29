@@ -2,4 +2,9 @@
 
 :queues:
   - default
-  - mailers
+
+:scheduler:
+  :schedule:
+    delete_transactions_job:
+      cron: '0 0 * * * *'   # Runs once per hour
+      class: DeleteTransactionsJob

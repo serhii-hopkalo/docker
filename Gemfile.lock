@@ -87,7 +87,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    chronic (0.10.2)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.0)
@@ -103,6 +102,8 @@ GEM
       reline (>= 0.3.1)
     diff-lcs (1.5.0)
     erubi (1.12.0)
+    et-orbi (1.2.7)
+      tzinfo
     execjs (2.8.1)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -112,10 +113,14 @@ GEM
     faker (3.2.0)
       i18n (>= 1.8.11, < 2)
     ffi (1.15.5)
+    fugit (1.8.1)
+      et-orbi (~> 1, >= 1.2.7)
+      raabro (~> 1.4)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
+    interactor (3.1.2)
     io-console (0.6.0)
     irb (1.6.4)
       reline (>= 0.3.0)
@@ -166,6 +171,7 @@ GEM
     public_suffix (5.0.1)
     puma (6.2.2)
       nio4r (~> 2.0)
+    raabro (1.4.0)
     racc (1.6.2)
     rack (2.2.7)
     rack-mini-profiler (3.1.0)
@@ -251,6 +257,8 @@ GEM
       rubocop (>= 1.33.0, < 2.0)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
+    rufus-scheduler (3.8.2)
+      fugit (~> 1.1, >= 1.1.6)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -273,6 +281,10 @@ GEM
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
       redis-client (>= 0.14.0)
+    sidekiq-scheduler (5.0.2)
+      rufus-scheduler (~> 3.2)
+      sidekiq (>= 6, < 8)
+      tilt (>= 1.4.0)
     slim (5.1.1)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
@@ -319,8 +331,6 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    whenever (1.0.0)
-      chronic (>= 0.6.3)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.8)
@@ -338,6 +348,7 @@ DEPENDENCIES
   debug
   factory_bot_rails
   faker
+  interactor
   jbuilder
   jsbundling-rails
   pg (~> 1.1)
@@ -354,6 +365,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-matchers
   sidekiq (~> 7.1)
+  sidekiq-scheduler
   slim-rails
   sprockets-rails
   stimulus-rails
@@ -363,7 +375,6 @@ DEPENDENCIES
   web-console
   webdrivers
   webpacker
-  whenever
 
 RUBY VERSION
    ruby 3.2.2p53

@@ -12,13 +12,9 @@ class AuthorizeTransaction < ApplicationService
     )
 
     if authorized.save
-      context.authorized = authorized
+      context.transaction = authorized
     else
       context.fail!(errors: authorized.errors.full_messages)
     end
   end
-
-  private
-
-  def validate; end
 end

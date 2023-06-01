@@ -1,4 +1,4 @@
-class AuthorizeTransaction < ApplicationService
+class ChargeTransaction < ApplicationService
   delegate :authorized, :user, to: :context
 
   def call
@@ -9,22 +9,12 @@ class AuthorizeTransaction < ApplicationService
       authorized: authorized
     )
 
+    # TODO: check customer's account
+
     if charged.save
-      context.charged = charged
+      context.transaction = charged
     else
       context.fail!(errors: charged.errors.full_messages)
     end
-  end
-
-  private
-
-  def validate
-    if context.authorized.charged.present?
-      context.fail!(errors: ["The transaction is already charged!"])
-    elsif context.authorized.reversal.present
-      context.fail!(errors: ["The transaction is already reversed!"])
-    end
-
-    # TODO: check customer's account
   end
 end

@@ -100,3 +100,5 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem "dry-validation", "~> 1.10"

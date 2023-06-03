@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   root to: "pages#home"
 
   # get "/up/", to: "up#index", as: :up
@@ -6,7 +8,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :transactions
+      resources :transactions, only: :create, constraints: -> request { request.format == :json }
     end
   end
 

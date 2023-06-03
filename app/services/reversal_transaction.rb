@@ -22,5 +22,6 @@ class ReversalTransaction < ApplicationService
   def validate
     if context.authorized.reversal.present?
       context.fail!(errors: ["The transaction is already reversed!"])
+    end
   end
 end

@@ -1,14 +1,15 @@
 class AuthorizeTransaction < ApplicationService
-  delegate :amount, :customer_email, :customer_phone, :user, to: :context
+  delegate :amount, :customer_email, :customer_phone, :merchant, to: :context
 
   def call
     super
 
-    authorized = Authorized.build(
-      merchant: context.user,
+    authorized = Authorized.new(
+      merchant: context.merchant,
       amount: context.amount,
       customer_email: context.customer_email,
       customer_phone: context.customer_phone,
+      status: :authorize,
     )
 
     if authorized.save

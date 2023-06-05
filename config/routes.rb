@@ -6,10 +6,8 @@ Rails.application.routes.draw do
   # get "/up/", to: "up#index", as: :up
   # get "/up/databases", to: "up#databases", as: :up_databases
 
-  namespace :api do
-    namespace :v1 do
-      resources :transactions, only: :create, constraints: -> request { request.format == :json }
-    end
+  namespace :api, defaults: { format: :json } do
+    resources :transactions, only: :create
   end
 
   # Sidekiq has a web dashboard which you can enable below. It's turned off by

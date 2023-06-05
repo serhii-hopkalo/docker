@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :transactions, only: :create
   end
 
-  post 'login' => 'sessions#create'
+  post 'authenticate' => 'sessions#create'
 
   require "sidekiq/web"
 

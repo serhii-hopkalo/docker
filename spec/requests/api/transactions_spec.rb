@@ -6,6 +6,7 @@ RSpec.describe Api::TransactionsController, type: :controller do
     let(:token)    { JsonWebTokenService.encode({ email: merchant.email }) }
     let(:email)    { 'email@emerchantpay.com' }
     let(:uuid)     { '4e27bd01-471e-426a-8f5a-b4b212caeb05' }
+    let(:json)     { JSON.parse(response.body) }
 
     before do
       request.headers['Authorization'] = "Token #{token}"
@@ -37,9 +38,9 @@ RSpec.describe Api::TransactionsController, type: :controller do
 
       it 'returns the authorized transaction as JSON' do
         post :create, params: transaction_params, format: :json
-        transaction = Authorized.last
+        transact = Authorized.last
 
-        expect(response.body).to eq(transaction.to_json)
+        expect(json['uuid']).to eq(transact.id)
       end
     end
 

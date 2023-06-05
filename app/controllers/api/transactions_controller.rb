@@ -1,4 +1,6 @@
 class Api::TransactionsController < ApplicationController
+  skip_forgery_protection
+
   before_action :authenticate
 
   respond_to :json
@@ -7,7 +9,7 @@ class Api::TransactionsController < ApplicationController
     result = service.call(transaction_params.merge(merchant: current_merchant))
 
     if result.success?
-      render json: result.transaction, status: :created
+      render json: result.transaction, status: :created, serializer: AuthorizedSerializer
     else
       render json: { errors: result.errors.first }, status: :unprocessable_entity
     end

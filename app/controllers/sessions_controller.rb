@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  skip_forgery_protection
+
   def create
     merchant = Merchant.find_for_authentication(email: params[:email])
 

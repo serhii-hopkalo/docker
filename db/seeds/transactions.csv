@@ -1,0 +1,2 @@
+amount,type,customer_email,customer_phone,referenced_transaction_uuid
+1999,authorize,merchant@example.com,555-1234,

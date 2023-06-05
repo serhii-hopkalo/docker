@@ -1,6 +1,4 @@
 class SessionsController < ApplicationController
-  respond_to :json
-
   def create
     merchant = Merchant.find_for_authentication(email: params[:email])
 

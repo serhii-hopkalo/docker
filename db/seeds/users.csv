@@ -1,0 +1,11 @@
+name,description,email,status,type
+John Doe,admin,johndoe@example.com,active,admin
+Jane Smith,merchant,janesmith@example.com,inactive,merchant
+Michael Johnson,admin,michaeljohnson@example.com,active,admin
+Sarah Brown,merchant,sarahbrown@example.com,active,merchant
+David Lee,merchant,davidlee@example.com,inactive,merchant
+Emily Wilson,merchant,emilywilson@example.com,active,merchant
+Alex Turner,merchant,alexturner@example.com,inactive,merchant
+Sophia Davis,merchant,sophiadavis@example.com,active,merchant
+Matthew Clark,merchant,matthewclark@example.com,inactive,merchant
+Olivia Moore,merchant,oliviamoore@example.com,active,merchant

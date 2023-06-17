@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :user do
     name { "Useruser" }
-    sequence(:email) { |n| "merchant#{n}@merchant.com"}
+    email { Faker::Internet.unique.email }
+    description { Faker::Lorem.sentence }
     status { :active }
     total_transaction_sum { 1 }
     type { 'Merchant' }

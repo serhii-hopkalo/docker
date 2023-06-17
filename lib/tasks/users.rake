@@ -1,19 +1,28 @@
-require 'factory_bot'
+require 'csv'
 
 namespace :seed do
-  desc "Seeds merchants and admin"
+  desc 'Seed database from CSV file'
   task users: :environment do
-    include FactoryBot::Syntax::Methods
+    file_path = Rails.root.join('db', 'seeds', 'users.csv')
 
-    create(:admin_user)
+    CSV.foreach(file_path, headers: true) do |row|
+      User.create!(
+        name: row['name'],
+        description: row['description'],
+        email: row['email'],
+        status: row['status'],
+        type: convert_type(row['type']),
+        password: 'password',
+      )
+    end
 
-    create(
-      :merchant,
-      name: 'Merchant 1',
-      email: 'merchant@mail.com',
-      status: :active,
-      total_transaction_sum: 100,
-      password: 'password'
-    )
+    puts 'Seed data successfully imported.'
+  end
+
+  def convert_type(string)
+    {
+      'admin' => 'AdminUser',
+      'merchant' => 'Merchant'
+    }[string]
   end
 end

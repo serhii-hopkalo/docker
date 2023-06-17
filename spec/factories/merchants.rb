@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :merchant do
     name { "Merchant" }
-    email { "merchant@merchant.com" }
+    email { Faker::Internet.unique.email }
     status { :active }
     total_transaction_sum { 1 }
     type { 'Merchant' }

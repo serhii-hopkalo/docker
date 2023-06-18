@@ -18,7 +18,7 @@ FactoryBot.define do
       "authorized#{n}@merchant.com"
     end
     customer_phone { Faker::PhoneNumber.cell_phone_in_e164 }
-    status { :authorize }
+    status { :approved }
     amount { rand(1..100) }
   end
 
@@ -31,7 +31,7 @@ FactoryBot.define do
     end
     customer_phone { Faker::PhoneNumber.cell_phone_in_e164 }
     amount { rand(1..100) }
-    status { :authorize }
+    status { :approved }
   end
 
   factory :refunded do
@@ -43,13 +43,13 @@ FactoryBot.define do
     end
 
     amount { rand(1..100) }
-    status { :authorize }
+    status { :approved }
   end
 
   factory :reversal do
     association :merchant
     association :authorized
 
-    status { :authorize }
+    status { :approved }
   end
 end

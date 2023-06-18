@@ -8,9 +8,7 @@ RSpec.describe Api::TransactionsController, type: :controller do
     let(:uuid)     { '4e27bd01-471e-426a-8f5a-b4b212caeb05' }
     let(:json)     { JSON.parse(response.body) }
 
-    before do
-      request.headers['Authorization'] = "Token #{token}"
-    end
+    before { request.headers['Authorization'] = "Token #{token}" }
 
     context 'with valid parameters' do
       let(:transaction_params) do

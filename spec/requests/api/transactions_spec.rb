@@ -72,4 +72,84 @@ RSpec.describe Api::TransactionsController, type: :controller do
       end
     end
   end
+
+  describe 'Sequence of transactions' do
+    let(:merchant) { create(:merchant) }
+    let(:token)    { JsonWebTokenService.encode({ email: merchant.email }) }
+    let(:email)    { 'email@emerchantpay.com' }
+    let(:transaction_params) do
+      {
+        transaction: {
+          amount: 10,
+          customer_email: email,
+          customer_phone: 'phonenumber',
+        }
+      }
+    end
+
+    def json
+      JSON.parse(response.body)
+    end
+
+    def uuid
+      json['uuid']
+    end
+
+    def status
+      json['status']
+    end
+
+    def create_authorized_transaction(params)
+      params[:transaction][:type] = :authorize
+
+      post :create, params: params, format: :json
+    end
+
+    def create_charged_transaction(params)
+      params[:transaction][:type] = :charge
+      params[:transaction][:referenced_transaction_uuid] = uuid
+
+      post :create, params: params, format: :json
+    end
+
+    def create_refund_transaction(params)
+      params[:transaction][:type] = :refund
+      params[:transaction][:referenced_transaction_uuid] = uuid
+
+      post :create, params: params, format: :json
+    end
+
+    def create_reversal_transaction(params)
+      params[:transaction][:type] = :reversal
+      params[:transaction][:referenced_transaction_uuid] = uuid
+
+      post :create, params: params, format: :json
+    end
+
+    before { request.headers['Authorization'] = "Token #{token}" }
+
+    describe 'Refunded transactions' do
+      describe 'Refunded transaction' do
+        it 'creates a refunded transaction' do
+          create_authorized_transaction(transaction_params)
+
+          create_charged_transaction(transaction_params)
+
+          create_refund_transaction(transaction_params)
+
+          expect(status).to eq('refunded')
+        end
+      end
+    end
+
+    describe 'Reversal transactions' do
+      it 'creates a reversal transaction' do
+        create_authorized_transaction(transaction_params)
+
+        create_reversal_transaction(transaction_params)
+
+        expect(status).to eq('reversed')
+      end
+    end
+  end
 end

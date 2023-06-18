@@ -4,14 +4,13 @@ class ApplicationService
   include Interactor
 
   def call
-    # TODO: authorization check
-    # if context.user.admin?
-    #   context.fail!(errors: ["Admins are not allowed to make transactions"])
-    # end
+    if context.merchant.admin?
+      context.fail!(errors: ["Admins are not allowed to make transactions"])
+    end
 
-    # if context.user.merchant? && context.user.inactive?
-    #   context.fail!(errors: ["Merchant is not active"])
-    # end
+    if context.merchant.merchant? && context.merchant.inactive?
+      context.fail!(errors: ["Merchant is not active"])
+    end
 
     validation = TransactionValidator.new.call(context.to_h)
 

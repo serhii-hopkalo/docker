@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe MerchantTotalAmountService do
-  describe 'The merchants total transactions amount has to be the su of the approved Charge transactions' do
+  describe 'The merchants total transactions amount has to be the sum of the approved Charge transactions' do
     let(:merchant1) { create(:merchant) }
     let(:merchant2) { create(:merchant) }
 
@@ -17,7 +17,7 @@ RSpec.describe MerchantTotalAmountService do
       create(:charged, authorized: authorized, merchant: merchant2, amount: 40)
     end
 
-    it 'should adds up all chanrged transactions specific merchant' do
+    it 'should adds up all chanrged transactions for specific merchant' do
       MerchantTotalAmountService.call(merchant_id: merchant1.id)
       MerchantTotalAmountService.call(merchant_id: merchant2.id)
 

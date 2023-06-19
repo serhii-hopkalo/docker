@@ -5,7 +5,7 @@ class ChargeTransaction < ApplicationService
     check_authorized!
 
     if charged.save
-      ProcessMerchantTotalTransactionsAmount.perform_later(merchant_id: context.merchant_id)
+      ProcessMerchantTotalTransactionsAmount.perform_later(merchant_id: context.merchant.id)
 
       context.transaction = charged
     else
@@ -16,16 +16,16 @@ class ChargeTransaction < ApplicationService
   private
 
   def check_authorized!
-    authorized = Authorized.find_by(id: context.referenced_transaction_uuid)
+    authorized = Authorized.find_by(id: context.transaction[:referenced_transaction_uuid])
 
     if authorized.blank?
       context.fail!(
-        errors: "Could not find Authorized transaction with given uuid #{context.referenced_transaction_uuid}"
+        errors: "Could not find Authorized transaction with given uuid #{context.transaction[:referenced_transaction_uuid]}"
       )
     end
 
     unless authorized.approved?
-      context.fail!(errors: ["Referenced transaction does not has approved status"])
+      context.fail!(errors: "Referenced transaction does not has approved status")
     end
   end
 
@@ -35,11 +35,11 @@ class ChargeTransaction < ApplicationService
     @charged =
       Charged.new(
         merchant: context.merchant,
-        amount: context.amount,
-        customer_email: context.customer_email,
-        customer_phone: context.customer_phone,
+        amount: context.transaction[:amount],
+        customer_email: context.transaction[:customer_email],
+        customer_phone: context.transaction[:customer_phone],
+        transact_id: context.transaction[:referenced_transaction_uuid],
         status: :approved,
-        transact_id: context.referenced_transaction_uuid
       )
   end
 end

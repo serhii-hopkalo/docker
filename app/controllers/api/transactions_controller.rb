@@ -6,7 +6,7 @@ class Api::TransactionsController < ApplicationController
   respond_to :json
 
   def create
-    result = service.call(transaction_params.merge(merchant: current_merchant))
+    result = service.call({transaction: transaction_params, merchant: current_merchant})
 
     if result.success?
       render json: result.transaction, status: :created, serializer: AuthorizedSerializer

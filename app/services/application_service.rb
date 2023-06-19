@@ -4,18 +4,24 @@ class ApplicationService
   include Interactor
 
   def call
+    check_merchant!
+
+    context.fail!(errors: validation.errors(full: true).to_h.values) if validation.failure?
+  end
+
+  def check_merchant!
     if context.merchant.admin?
-      context.fail!(errors: ["Admins are not allowed to make transactions"])
+      context.fail!(errors: "Admins are not allowed to make transactions")
     end
 
     if context.merchant.merchant? && context.merchant.inactive?
-      context.fail!(errors: ["Merchant is not active"])
+      context.fail!(errors: "Merchant is not active")
     end
+  end
 
-    validation = TransactionValidator.new.call(context.to_h)
+  def validation
+    return @validation if defined? @validation
 
-    if validation.failure?
-      context.fail!(errors: validation.errors(full: true).to_h.values)
-    end
+    @validation = TransactionValidator.new.call(context.transaction)
   end
 end

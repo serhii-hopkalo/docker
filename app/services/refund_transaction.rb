@@ -5,7 +5,7 @@ class RefundTransaction < ApplicationService
     check_charged!
 
     if refunded.save
-      Charged.where(id: context.referenced_transaction_uuid).update(status: :refunded)
+      Charged.where(id: context.transaction[:referenced_transaction_uuid]).update(status: :refunded)
 
       context.transaction = refunded
     else
@@ -16,16 +16,16 @@ class RefundTransaction < ApplicationService
   private
 
   def check_charged!
-    charged = Charged.find_by(id: context.referenced_transaction_uuid)
+    charged = Charged.find_by(id: context.transaction[:referenced_transaction_uuid])
 
     if charged.blank?
       context.fail!(
-        errors: "Could not find Authorized transaction with given uuid #{context.referenced_transaction_uuid}"
+        errors: "Could not find Authorized transaction with given uuid #{context.transaction[:referenced_transaction_uuid]}"
       )
     end
 
     unless charged.approved?
-      context.fail!(errors: ["Referenced transaction does not has approved status"])
+      context.fail!(errors: "Referenced transaction does not has approved status")
     end
   end
 
@@ -34,11 +34,11 @@ class RefundTransaction < ApplicationService
 
     @refunded = Refunded.new(
       merchant: context.merchant,
-      amount: context.amount,
-      customer_email: context.customer_email,
-      customer_phone: context.customer_phone,
+      amount: context.transaction[:amount],
+      customer_email: context.transaction[:customer_email],
+      customer_phone: context.transaction[:customer_phone],
+      transact_id: context.transaction[:referenced_transaction_uuid],
       status: :refunded,
-      transact_id: context.referenced_transaction_uuid
     )
   end
 end

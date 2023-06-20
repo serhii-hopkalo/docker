@@ -39,16 +39,5 @@ RSpec.describe Transact, type: :model do
       end
     end
   end
-
-  # TODO: move this spec to ChargeTransaction's spec
-  xdescribe 'Charged transaction' do
-    let(:charged) { build(:charged, authorized: authorized, merchant: merchant) }
-
-    it 'should call background job' do
-      expect(ProcessMerchantTotalTransactionsAmount).to receive(:perform_later).with(merchant_id: merchant.id)
-
-      charged.save!
-    end
-  end
 end
 

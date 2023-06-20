@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe ReversalTransaction do
-  include_context 'transaction params', ReversalTransaction
-  it_behaves_like 'authorization protectable', ReversalTransaction
+RSpec.describe Transaction::ReversalTransaction do
+  include_context 'transaction params', Transaction::ReversalTransaction
+  it_behaves_like 'authorization protectable', Transaction::ReversalTransaction
 
   describe 'checking referenced transaction' do
     let(:current_user) { create(:merchant) }

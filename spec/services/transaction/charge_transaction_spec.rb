@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe ChargeTransaction do
-  include_context 'transaction params', ChargeTransaction
-  it_behaves_like 'authorization protectable', ChargeTransaction
+RSpec.describe Transaction::ChargeTransaction do
+  include_context 'transaction params', Transaction::ChargeTransaction
+  it_behaves_like 'authorization protectable', Transaction::ChargeTransaction
 
   describe 'checking referenced tranaction' do
     let(:current_user) { create(:merchant) }

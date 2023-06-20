@@ -27,7 +27,7 @@ class Api::TransactionsController < ApplicationController
   end
 
   def service
-    "#{transaction_params[:type].to_s.camelize}Transaction".constantize
+    "Transaction::#{transaction_params[:type].to_s.camelize}Transaction".constantize
   end
 
   def authenticate

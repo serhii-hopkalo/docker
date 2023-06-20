@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe RefundTransaction do
-  include_context 'transaction params', RefundTransaction
-  it_behaves_like 'authorization protectable', RefundTransaction
+RSpec.describe Transaction::RefundTransaction do
+  include_context 'transaction params', Transaction::RefundTransaction
+  it_behaves_like 'authorization protectable', Transaction::RefundTransaction
 
   describe 'checking referenced transaction' do
     let(:current_user) { create(:merchant) }
